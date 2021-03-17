@@ -1,0 +1,124 @@
+{
+    "data": [
+    {
+      "id": 1000,
+      "name": "Pena",
+      "students": [
+        {
+          "id": 1000,
+          "name": "James Butt",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500,
+          "email":"sample@yahoo.com"
+        },
+        {
+          "id": 1001,
+          "name": "Josephine Darakjy",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500,
+          "email":"sample@yahoo.com"
+        }
+    ]
+    },
+    {
+      "id": 1001,
+      "name": "Cruz",
+      "students":[
+        {
+          "id": 1002,
+          "name": "Art Venere",
+          "email": "Chemel, James L Cpa",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500
+        },
+        {
+          "id": 1003,
+          "name": "Lenna Paprocki",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500,
+          "email":"sample@yahoo.com"
+        }
+      ]
+    },
+    {
+      "id": 1002,
+      "name": "Ona",
+      "students":[
+        {
+          "id": 1002,
+          "name": "Art Venere",
+          "email": "Chemel, James L Cpa",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500
+        },
+        {
+          "id": 1003,
+          "name": "Lenna Paprocki",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500,
+          "email":"sample@yahoo.com"
+        }
+      ]
+    },
+    {
+      "id": 1003,
+      "name": "Santiago",
+      "students":[
+        {
+          "id": 1002,
+          "name": "Art Venere",
+          "email": "Chemel, James L Cpa",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500
+        },
+        {
+          "id": 1003,
+          "name": "Lenna Paprocki",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500,
+          "email":"sample@yahoo.com"
+        }
+      ]
+    },
+    {
+      "id": 1004,
+      "name": "Marasigan",
+      "students":[
+        {
+          "id": 1002,
+          "name": "Art Venere",
+          "email": "Chemel, James L Cpa",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500
+        },
+        {
+          "id": 1003,
+          "name": "Lenna Paprocki",
+          "birthdate": "2017-05-13",
+          "school":"DLSU",
+          "contact":"0915123456",
+          "rate": 500,
+          "email":"sample@yahoo.com"
+        }
+      ]
+    }
+  ]
+}
