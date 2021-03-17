@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0a3ff9"],{"0520":function(n,e,t){"use strict";t.r(e);var c=t("7a23"),i={class:"stepsdemo-content"},o=Object(c["k"])("i",{class:"pi pi-fw pi-money-bill"},null,-1),a=Object(c["k"])("p",null,"Payment Component Content via Child Route",-1);function p(n,e,t,p,s,u){return Object(c["u"])(),Object(c["f"])("div",i,[o,a])}var s={};s.render=p;e["default"]=s}}]);
+//# sourceMappingURL=chunk-2d0a3ff9.ce9fd48a.js.map

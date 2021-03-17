@@ -1,0 +1,79 @@
+{
+    "data": [
+    	{
+            "id": 1,
+    		"title": "All Day Event",
+    		"start": "2021-02-22",
+			"paid":true,
+			"studentId":1000
+    	},
+    	{
+            "id": 2,
+    		"title": "Long Event",
+    		"start": "2021-02-07",
+    		"end": "2021-02-23",
+			"paid":true,
+			"studentId":1001
+    	},
+    	{
+    		"id": 3,
+    		"title": "Repeating Event",
+    		"start": "2021-02-24T16:00:00",
+			"end": "2021-02-24T20:00:00",
+			"paid":false,
+			"studentId":1002
+    	},
+    	{
+    		"id": 4,
+    		"title": "Repeating Event",
+    		"start": "2021-02-25T16:00:00",
+			"paid":false,
+			"studentId":1003
+    	},
+    	{
+            "id": 5,
+    		"title": "Conference",
+    		"start": "2021-02-22",
+    		"end": "2021-02-24",
+			"paid":true,
+			"studentId":1000
+    	},
+    	{
+            "id": 6,
+    		"title": "Meeting",
+    		"start": "2019-01-12T10:30:00",
+    		"end": "2019-01-12T12:30:00"
+    	},
+    	{
+            "id": 7,
+    		"title": "Lunch",
+    		"start": "2019-01-12T12:00:00"
+    	},
+    	{
+            "id": 8,
+    		"title": "Meeting",
+    		"start": "2019-01-12T14:30:00"
+    	},
+    	{
+            "id": 9,
+    		"title": "Happy Hour",
+    		"start": "2019-01-12T17:30:00"
+    	},
+    	{
+            "id": 10,
+    		"title": "Dinner",
+    		"start": "2019-01-12T20:00:00"
+    	},
+    	{
+            "id": 11,
+    		"title": "Birthday Party",
+    		"start": "2019-01-13T07:00:00"
+    	},
+    	{
+            "id": 12,
+    		"title": "Click for Google",
+    		"url": "http://google.com/",
+    		"start": "2019-01-28"
+    	}
+    ]
+}
