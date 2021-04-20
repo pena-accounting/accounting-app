@@ -214,7 +214,7 @@ export default {
       this.submitted = true;
       if (this.validateForm()) {
         try {
-          var newStudent = await this.studentService.addStudent({
+          var res = await this.studentService.addStudent({
             ...this.student,
             family_group:
               this.student.family_group.name == "None"
@@ -222,7 +222,12 @@ export default {
                 : this.student.family_group.id,
             avatars: this.student.avatar ?? "",
           });
-          newStudent = newStudent.student;
+          console.log(res)
+          if (res.return_status == "error") {
+            this.showFail("Add Student Failed", res.return_message);
+            return
+          }
+          const newStudent = res.student;
           this.showSuccess(
             "Add Student Success",
             "Successfully added " +
@@ -262,11 +267,11 @@ export default {
         this.validationErrors["last_name"] = true;
       else delete this.validationErrors["last_name"];
 
-      if (!this.student.email.trim())
-        this.validationErrors["email"] = "Email is required.";
-      else if (!this.validateEmail(this.student.email.trim()))
-        this.validationErrors["email"] = "Invalid email.";
-      else delete this.validationErrors["email"];
+      // if (!this.student.email.trim())
+      //   this.validationErrors["email"] = "Email is required.";
+      // else if (!this.validateEmail(this.student.email.trim()))
+      //   this.validationErrors["email"] = "Invalid email.";
+      // else delete this.validationErrors["email"];
 
       if (!this.student.school.trim()) this.validationErrors["school"] = true;
       else delete this.validationErrors["school"];

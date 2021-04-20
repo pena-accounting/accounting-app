@@ -11,7 +11,7 @@
             <ul v-show="expanded">
                 <li><button class="p-link"><i class="pi pi-fw pi-user"></i><span>Account</span></button></li>
                 <li><button class="p-link"><i class="pi pi-fw pi-inbox"></i><span>Notifications</span><span class="menuitem-badge">2</span></button></li>
-                <li><button class="p-link"><i class="pi pi-fw pi-power-off"></i><span>Logout</span></button></li>
+                <li><button @click="logout" class="p-link"><i class="pi pi-fw pi-power-off"></i><span>Logout</span></button></li>
             </ul>
         </transition>
 		
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import VueCookies from "vue-cookies";
 	export default {
 		data() {
 			return {
@@ -29,6 +30,10 @@
 			onClick(event){
 				this.expanded = !this.expanded;
 				event.preventDefault();
+			},
+			logout(){
+				VueCookies.remove("acctg-session");
+				location.reload();
 			}
 		}
 	}

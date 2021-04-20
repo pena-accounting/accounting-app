@@ -2,10 +2,8 @@
 	<div class="p-grid">
         <div class="p-col-12">
 			<div class="card card-w-title">
-				<!-- <h5>TabMenu</h5>
-				<p>Steps and TabMenu are integrated with the same child routes.</p> -->
 				<TabMenu :model="nestedRouteItems" />
-				<router-view :curTutor="curTutor"/>
+				<router-view/>
 			</div>
 		</div>
 	</div>
@@ -18,12 +16,12 @@ export default {
 		return {
             nestedRouteItems: [
 					{
-						label: 'Weekly Schedule',
-						to: '/schedule'
+						label: 'Tutor List',
+						to: '/tutor'
 					},
 					{
-						label: 'Add Appointment',
-						to: '/schedule/addappointment'
+						label: 'Add Tutor',
+						to: '/tutor/add'
 					},
 				],
 		};
@@ -32,9 +30,6 @@ export default {
 	},
 	mounted() {
 	},
-	props: {
-    curTutor: Object,
-  },
 	methods: {
 
 	}

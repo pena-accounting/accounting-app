@@ -20,9 +20,9 @@
 					<label for="input_filled">Filled</label>
 				</div>
 			</div>
-
+<!-- 
 			<h5>Ripple Effect</h5>
-			<InputSwitch :modelValue="rippleActive" @update:modelValue="changeRipple" />
+			<InputSwitch :modelValue="rippleActive" @update:modelValue="changeRipple" /> -->
 
 			<h5>Menu Type</h5>
 			<div class="p-formgroup-inline">

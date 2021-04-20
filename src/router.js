@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter,createWebHashHistory} from 'vue-router';
 import Dashboard from './views/Dashboard.vue';
 
 const routes = [
@@ -13,6 +13,7 @@ const routes = [
         children: [
             {
                 path: '',
+                name: 'weeklysched',
                 component: () => import('./views/WeeklySchedule.vue'),
             },
             {
@@ -40,8 +41,22 @@ const routes = [
         ],
     },
     {
-        path: '/invoices',
-        name: 'invoices',
+        path: '/tutor',
+        component: () => import('./views/TutorMgmt.vue'),
+        children: [
+            {
+                path: '',
+                component: () => import('./views/TutorList.vue'),
+            },
+            {
+                path: '/tutor/add',
+                component: () => import('./views/AddTutor.vue'),
+            },
+        ],
+    },
+    {
+        path: '/statements',
+        name: 'statements',
         component: () => import('./views/Invoices.vue'),
     },
     {
@@ -193,9 +208,11 @@ const routes = [
     },
 ];
 
+// console.log(process.env.BASE_URL)
 const router = createRouter({
     history: createWebHashHistory(),
     routes,
+    mode: 'history',
 });
 
 export default router;

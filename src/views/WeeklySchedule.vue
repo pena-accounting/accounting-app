@@ -9,7 +9,7 @@
           >
         </div>
         <FullCalendar
-          :events="appointments"
+          :events="filteredAppointments"
           :options="options"
           ref="fullCalendar"
         />
@@ -59,6 +59,17 @@
                 appendTo="body"
                 :disabled="mode == 'view'"
               />
+            </div>
+            <div class="p-field">
+              <label for="title">Tutor</label>
+              <Dropdown
+                  placeholder="Select One"
+                  v-if="clickedEvent"
+                  v-model="changedEvent.tutor_object"
+                  :options="tutors"
+                  optionLabel="fullname"
+                  :disabled="mode == 'view'"
+                ></Dropdown>
             </div>
             <div class="p-field p-col-6 p-md-6">
               <label for="allday">Paid</label>
@@ -111,7 +122,7 @@
 
 <script>
 import AppointmentService from "../service/AppointmentService";
-import EventService from "../service/EventService";
+import TutorService from "../service/TutorService";
 import StudentService from "../service/StudentService";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -140,11 +151,12 @@ export default {
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         },
         editable: false,
+        firstDay:1,
         eventClick: (e) => {
           this.eventDialog = true;
           // console.log(e);
           this.clickedEvent = e.event;
-          console.log(this.clickedEvent);
+          // console.log(this.clickedEvent);
           this.changedEvent.title = this.clickedEvent.title;
           this.changedEvent.start = this.clickedEvent.start;
           this.changedEvent.end = this.clickedEvent.end;
@@ -152,6 +164,7 @@ export default {
           this.changedEvent.topic = this.clickedEvent.extendedProps.topic;
           this.changedEvent.fullname = this.clickedEvent.extendedProps.fullname;
           this.changedEvent.student = this.clickedEvent.extendedProps.student;
+          this.changedEvent.tutor_object = this.clickedEvent.extendedProps.tutor_object;
         },
         customButtons: {
           prev: {
@@ -178,23 +191,36 @@ export default {
       },
       events: null,
       appointments: null,
+      filteredAppointments:null,
       students: null,
       mode: "view",
+      tutors:null
     };
   },
-  eventService: null,
+  tutorService: null,
   appointmentService: null,
   studentService: null,
+  props: {
+    curTutor: Object,
+  },
   created() {
-    this.eventService = new EventService();
     this.appointmentService = new AppointmentService();
     this.studentService = new StudentService();
+    this.tutorService = new TutorService();
   },
   async mounted() {
     try {
       this.students = await this.studentService.getStudents();
+      this.tutors = await this.tutorService.getUnarchivedTutors();
+      this.tutors = this.tutors.map((tutor) => ({
+      ...tutor,
+      fullname: tutor.first_name + " " + tutor.last_name,
+    }));
+
       const data = await this.appointmentService.getAppointments();
       this.appointments = data.results;
+
+      // add necessary fields to all appointments
       this.appointments.forEach((appointment) => {
         appointment["start"] = appointment.start_date;
         appointment["end"] = appointment.end_date;
@@ -207,15 +233,29 @@ export default {
         });
         appointment["fullname"] = student.first_name + " " + student.last_name;
         appointment["title"] =
-          appointment["fullname"] + ": " + appointment.topic;
+          appointment["fullname"] + (appointment.topic === "" ? "" : ": " + appointment.topic)
+        const tutor = this.tutors.find((t) => {
+          return t.id == appointment["tutor"];
+        });
+
+        appointment["tutor_object"] = tutor;
       });
 
       if (this.appointments.length == 0) {
         this.showWarn("No Sessions", "You have not added any sessions yet");
+        return;
       }
+
+      this.filteredAppointments = this.curTutor.id === undefined ? this.appointments : this.appointments.filter((app) => app.tutor === this.curTutor.id) 
+
     } catch (err) {
       console.log(err.response);
     }
+  },
+  watch: {
+    curTutor: function () {
+      this.filteredAppointments = this.curTutor.id === undefined ? this.appointments : this.appointments.filter((app) => app.tutor === this.curTutor.id)
+    },
   },
   methods: {
     findIndexById(id) {
@@ -237,11 +277,19 @@ export default {
           end_date:moment(this.changedEvent.end).format("YYYY-MM-DDTHH:mm:ss"),
           student:this.changedEvent.student,
           topic:this.changedEvent.topic,
-          paid:this.changedEvent.paid
+          paid:this.changedEvent.paid,
+          tutor:this.changedEvent.tutor_object.id
         })
         if (res.return_status != "Success") {
           this.showFail("Edit Appointment Fail", res.return_message);
           return;
+        }
+        const tutor = this.tutors.find((t) => {
+          return t.id == res.appointments["tutor"];
+        });
+        res.appointments = {
+          ...res.appointments,
+          tutor_object:tutor
         }
         this.clickedEvent.setProp(
           "extendedProps",
@@ -251,7 +299,7 @@ export default {
         this.clickedEvent.setEnd(this.changedEvent.end);
         this.clickedEvent.setProp(
           "title",
-          this.changedEvent.fullname + ": " + this.changedEvent.topic
+          this.changedEvent.fullname + (this.changedEvent.topic === "" ? "" : ": " + this.changedEvent.topic)
         );
         //  this.clickedEvent.setProp("extendedProps", result.appointments);
         // this.clickedEvent.setAllDay(this.changedEvent.allDay);

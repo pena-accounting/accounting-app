@@ -16,7 +16,7 @@
               :options="students"
               optionLabel="fullname"
               placeholder="Select One"
-              :disabled="students == null || students.length == 0"
+              :disabled="students.length == 0"
               :class="{ 'p-invalid': validationErrors.student && submitted }"
             ></Dropdown>
             <small
@@ -62,7 +62,7 @@
               >End time must be later than start time.</small
             >
           </div>
-          <div class="p-field p-col-12 p-md-6">
+          <div class="p-field p-col-12 p-md-3">
             <label>Topic</label>
             <InputText
               v-model="appointment.topic"
@@ -71,6 +71,22 @@
             />
             <small v-show="validationErrors.topic && submitted" class="p-error"
               >Topic is required.</small
+            >
+          </div>
+          <div class="p-field p-col-12 p-md-3">
+            <label>Tutor</label>
+            <Dropdown
+              v-model="appointment.tutor"
+              :options="tutors"
+              optionLabel="fullname"
+              placeholder="Select One"
+              :disabled="tutors.length == 0"
+              :class="{ 'p-invalid': validationErrors.tutor && submitted }"
+            ></Dropdown>
+            <small
+              v-show="validationErrors.tutor && submitted"
+              class="p-error"
+              >Tutor is required.</small
             >
           </div>
           <div class="p-field p-col-12 p-md-3">
@@ -120,6 +136,7 @@
 <script>
 import StudentService from "../service/StudentService";
 import AppointmentService from "../service/AppointmentService";
+import TutorService from "../service/TutorService";
 import moment from "moment";
 
 export default {
@@ -139,8 +156,10 @@ export default {
         topic: "",
         repeat: "None",
         until: new Date(moment().add(7, "days")),
+        tutor:null,
       },
       repeatOptions: ["None", "Every Week", "Every Day"],
+      tutors:[],
       students: [],
       validationErrors: {},
       submitted: false,
@@ -149,23 +168,29 @@ export default {
   },
   studentService: null,
   appointmentService: null,
+  tutorService:null,
   created() {
     this.studentService = new StudentService();
     this.appointmentService = new AppointmentService();
+    this.tutorService = new TutorService();
   },
   async mounted() {
     try {
-      const data = await this.studentService.getStudents();
-      this.students = data;
-      this.students = this.students.filter((s) => {
-        return !s.archive;
-      });
+      this.tutors = await this.tutorService.getUnarchivedTutors();
+      this.tutors = this.tutors.map((tutor) => ({
+        ...tutor,
+        fullname: tutor.first_name + " " + tutor.last_name,
+      }));
+      this.students = await this.studentService.getUnarchivedStudents();
       this.students = this.students.map((student) => ({
         ...student,
         fullname: student.first_name + " " + student.last_name,
       }));
       if (this.students.length == 0) {
         this.showWarn("No Students Added", "Add students first before adding appointments")
+      }
+      if (this.tutors.length == 0) {
+        this.showWarn("No Tutors Added", "Add tutors first before adding appointments")
       }
     } catch (err) {
       this.showFail("Error", err);
@@ -184,6 +209,7 @@ export default {
           date + this.appointment.to.toISOString().slice(10)
         ).format("YYYY-MM-DDTHH:mm:ss"),
         student: this.appointment.student.id,
+        tutor: this.appointment.tutor.id,
         topic: this.appointment.topic,
         paid: this.appointment.paid,
       };
@@ -254,12 +280,16 @@ export default {
       };
     },
     validateForm() {
-      if (!this.appointment.topic.trim()) this.validationErrors["topic"] = true;
-      else delete this.validationErrors["topic"];
+      // if (!this.appointment.topic.trim()) this.validationErrors["topic"] = true;
+      // else delete this.validationErrors["topic"];
 
       if (this.appointment.student == null)
         this.validationErrors["student"] = true;
       else delete this.validationErrors["student"];
+
+      if (this.appointment.tutor == null)
+        this.validationErrors["tutor"] = true;
+      else delete this.validationErrors["tutor"];
 
       const from = moment(this.appointment.from);
       const to = moment(this.appointment.to);

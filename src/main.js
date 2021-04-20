@@ -72,6 +72,7 @@ import TriStateCheckbox from 'primevue/tristatecheckbox';
 // app.$cookies.config('7d')
 
 import Divider from 'primevue/divider';
+import ProgressSpinner from 'primevue/progressspinner';
 
 import CodeHighlight from './AppCodeHighlight';
 
@@ -103,7 +104,6 @@ app.use(router);
 
 import PrimeVue from 'primevue/config';
 
-
 app.use(PrimeVue);
 
 // import Vuelidate from 'vuelidate'
@@ -113,6 +113,10 @@ app.use(PrimeVue);
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);
 app.directive('code', CodeHighlight);
+
+
+
+
 
 app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
@@ -179,6 +183,20 @@ app.component('TreeTable', TreeTable);
 app.component('TriStateCheckbox', TriStateCheckbox);
 
 app.component('Divider', Divider);
+app.component('ProgressSpinner', ProgressSpinner);
+
+app.mixin({
+    methods: {
+      globalHelper: function () {
+        alert("Hello world")
+      },
+      onSignIn (user) {
+          console.log("HELLO")
+        const profile = user.getBasicProfile()
+        console.log(profile);
+      },
+    },
+  })
 
 app.mount('#app');
 
