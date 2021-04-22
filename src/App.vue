@@ -209,7 +209,7 @@ export default {
         // {label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => {window.location = "#/documentation"}},
         // {label: 'View Source', icon: 'pi pi-fw pi-search', command: () => {window.location = "https://github.com/primefaces/sigma-vue"}}
       ],
-      session: true,
+      session: false,
       error: false,
       success:false,
       tutor:null
@@ -223,11 +223,13 @@ export default {
     },
   },
   mounted() {
+    this.userService = new UserService();
+
     const sid = VueCookies.get("acctg-session");
     if (sid) {
       this.session = true;
+      return;
     }
-    this.userService = new UserService();
 
     try {
       window.gapi?.signin2.render("google-signin-button", {
@@ -246,24 +248,27 @@ export default {
     async onSignIn(user) {
       try {
         const res = await this.userService.login({
-          access_token: user.tc.id_token,
+          access_token: user.tc?.id_token ?? user.qc.id_token,
         });
         if (res.return_status === "error") {
-          this.error = user.Qs.zt + " is not authorized to use this app.";
+          this.error = (user.Qs?.zt ?? user.ft.Qt) + " is not authorized to use this app.";
         } else {
           this.success = "User authorized. Kindly wait to be redirected.";
-          VueCookies.set("acctg-session", user.tc.id_token, "1d");
+          VueCookies.set("acctg-session", user.tc?.id_token ?? user.qc.id_token, "1d");
           this.session = true;
         }
+    //     var auth2 = gapi.auth2.getAuthInstance();
+    //  auth2.disconnect();
         window.gapi.auth2
           .getAuthInstance()
-          .signOut()
+          .disconnect()
           .then(function () {
             console.log("User signed out.");
             // location.reload();
           });
       } catch (error) {
-        console.log(error.response.data);
+        console.log(user)
+        console.log(error);
       }
     },
     onWrapperClick() {
